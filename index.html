@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FCPS Grade Calculator</title>
+  <link rel="icon" type="image/png" href="calculator.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+      padding: 14px 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 14px 16px;
+      float: left;
+    }
+
+    .navbar a:hover {
+      background-color: #575757;
+    }
+
+    .container {
+      max-width: 400px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 60px auto 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label, input {
+      display: block;
+      width: 98%;
+      margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: green;
+    }
+
+    .grade {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="index.html">Calculator</a>
+    <a href="howToUse.html">How to use</a>
+  </div>
+
+  <p>Note: This calculator is meant for Fairfax County Public Schools high school students. I don't know how middle schools and other school systems work.</p>
+  <p> Most grade calculators are hard to use and are only relevant in school districts that no one has ever heard of. This grade calculator is easy to use, and is specifically uses FCPS's grading system.<p>
+
+  <div class="container">
+    <h2>Grade Calculator</h2>
+    <label>Current total formative points: <input type="number" id="a" step="any"></label>
+    <label>Current possible formative points: <input type="number" id="b" step="any"></label>
+    <label>Current summative points: <input type="number" id="c" step="any"></label>
+    <label>Current possible summative points: <input type="number" id="d" step="any"></label>
+
+    <!-- New Inputs -->
+    <label>Add to formative points: <input type="number" id="e" step="any"></label>
+    <label>Add to possible formative points: <input type="number" id="f" step="any"></label>
+    <label>Add to summative points: <input type="number" id="g" step="any"></label>
+    <label>Add to possible summative points: <input type="number" id="h" step="any"></label>
+
+    <button id="calculateBtn">Calculate</button>
+
+    <div class="result" id="result"></div>
+    <div class="grade" id="grade"></div>
+  </div>
+
+  <script>
+    document.getElementById("calculateBtn").addEventListener("click", function() {
+      const a = parseFloat(document.getElementById('a').value);
+      const b = parseFloat(document.getElementById('b').value);
+      const c = parseFloat(document.getElementById('c').value);
+      const d = parseFloat(document.getElementById('d').value);
+      const e = parseFloat(document.getElementById('e').value);
+      const f = parseFloat(document.getElementById('f').value);
+      const g = parseFloat(document.getElementById('g').value);
+      const h = parseFloat(document.getElementById('h').value);
+      const resultEl = document.getElementById('result');
+      const gradeEl = document.getElementById('grade');
+
+      // Validate input
+      if (
+        [a, b, c, d, e, f, g, h].some(value => isNaN(value))
+      ) {
+        resultEl.textContent = "Calculator needs all values to work.";
+        gradeEl.textContent = "";
+        return;
+      }
+
+      if ((b + f) === 0 || (d + h) === 0) {
+        resultEl.textContent = "Your grade is not 0 stop lying.";
+        gradeEl.textContent = "";
+        return;
+      }
+
+      const result = (0.3 * (a + e) / (b + f)) + (0.7 * (c + g) / (d + h));
+      resultEl.textContent = "Result: " + (result * 100).toFixed(2) + "%";
+
+      let letterGrade = "";
+      if (result >= 0.925) letterGrade = "A (congrats)";
+      else if (result >= 0.895) letterGrade = "A- (its not that big of a deal trust)";
+      else if (result >= 0.865) letterGrade = "B+ (not bad at all)";
+      else if (result >= 0.825) letterGrade = "B (dont be sad im sure you tried your best)";
+      else if (result >= 0.795) letterGrade = "B- (you're fine great things will happen)";
+      else if (result >= 0.765) letterGrade = "C+ (decent grade ig)";
+      else if (result >= 0.725) letterGrade = "C (never give up bro)";
+      else if (result >= 0.695) letterGrade = "C- (i mean at least its not a d)";
+      else if (result >= 0.665) letterGrade = "D+ (you're passing yay!)";
+      else if (result >= 0.625) letterGrade = "D (hop off fortnite bro)";
+      else if (result >= 0.595) letterGrade = "D- (bro lock in dont slip to an f)";
+      else if (result >= 0.495) letterGrade = "F (bro how)";
+      else letterGrade = "F (if you are unironically this low idk what to say)";
+
+      gradeEl.textContent = "Grade: " + letterGrade;
+    });
+  </script>
+</body>
+</html>
